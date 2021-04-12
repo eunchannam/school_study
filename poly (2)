@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+typedef struct poly {
+	int coef;
+	int expon;
+}poly;
+
+poly terms[101] = { {8, 3}, {7, 1}, {1, 0}, {10, 3}, {3, 2}, {1, 0} };
+int avail = 6;
+
+void print(int s, int e) {
+	for (int i = s; i < e; i++) {
+		printf("%dx^%d + ", terms[i].coef, terms[i].expon);
+	}
+	printf("%d\n", terms[e].coef);
+}
+
+
+int main()
+{
+	int as = 0;
+	int ae = 2;
+	int bs = 3; 
+	int be = 5;
+
+	print(as, ae);
+	print(bs, be);
+	
+	return 0;
+}
