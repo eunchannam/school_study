@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+typedef struct poly {
+	int degree;
+	int coef[101];
+}poly;
+
+poly add_poly(poly a, poly b) {
+	poly c;
+	int a_degree = a.degree;
+	int b_degree = b.degree;
+	int apos = 0, bpos = 0, cpos = 0;
+
+	if (a.degree >= b.degree) c.degree = a.degree;
+	else c.degree = b.degree;
+
+	while (apos <= a.degree && bpos <= b.degree) {
+		if (a_degree > b_degree) {
+			c.coef[cpos++] = a.coef[apos++];
+			a_degree--;
+		}
+		else if (a_degree == b_degree) {
+			c.coef[cpos++] = a.coef[apos++] + b.coef[bpos++];
+			a_degree--; b_degree--;
+		}
+		else {
+			c.coef[cpos++] = b.coef[bpos++];
+			b_degree--;
+		}
+	}
+	
+	return c;
+}
+
+void print(poly a) {
+	printf("다항식 : ");
+	for (int i = 0; i < a.degree; i++) {
+		if (a.coef[i] != 0) {
+			printf("%dx^%d + ", a.coef[i], a.degree - i);
+		}
+	}
+	printf("%d", a.coef[a.degree]);
+}
+
+int main()
+{
+	poly a = { 5, {10, 0, 0, 0, 6, 3} };
+	poly b = { 4, {    9, 0, 0, 1, 2} };
+
+	poly c = add_poly(a, b);
+
+	print(c);
+
+	return 0;
+}
