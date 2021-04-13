@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#define size 100
+
+typedef int element;
+
+int top = -1;
+element stack[size];
+
+int is_empty() {
+	if (top == -1) return 1;
+	return 0;
+}
+
+int is_full() {
+	if (top == size - 1) return 1;
+	return 0;
+}
+
+void push(element item) {
+	if (is_full()) {
+		fprintf(stderr, "스택 포화 에러");
+		exit(1);
+	}
+	else stack[++top] = item;
+}
+
+element pop() {
+	if (is_empty()) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else return stack[top--];
+}
+
+element peek() {
+	if (is_empty()) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else return stack[top];
+}
+
+int main()
+{	
+	push(1);
+	push(2);
+	push(3);
+	push(4);
+	push(5);
+	printf("%d\n", pop());
+	printf("%d\n", pop());
+	printf("%d\n", pop());
+
+	return 0;
+}
