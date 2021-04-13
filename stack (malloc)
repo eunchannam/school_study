@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#define size 100
+
+typedef int element;
+
+typedef struct {
+	element* data;
+	int top;
+	int cap;
+}stacktype;
+
+void init_stack(stacktype* s) {
+	s->top = -1;
+	s->cap = 1;
+	s->data = (element*)malloc(sizeof(element));
+}
+
+int is_empty(stacktype* s) {
+	if (s->top == -1) return 1;
+	return 0;
+}
+
+int is_full(stacktype* s) {
+	if (s->top == (s->cap) - 1) return 1;
+	return 0;
+}
+
+void push(stacktype* s, element item) {
+	if (is_full(s)) {
+		s->cap *= 2;
+		s->data = (element*)realloc(s->data, s->cap * sizeof(element));
+	}
+	s->data[++(s->top)] = item;
+}
+
+element pop(stacktype* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else return s->data[(s->top)--];
+}
+
+element peek(stacktype* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else return s->data[(s->top)];
+}
+
+int main()
+{	
+	stacktype s;
+
+	init_stack(&s);
+	push(&s, 1);
+	push(&s, 2);
+	push(&s, 3);
+	push(&s, 4);
+	push(&s, 5);
+	printf("%d\n", pop(&s));
+	printf("%d\n", pop(&s));
+	printf("%d\n", pop(&s));
+
+	return 0;
+}
