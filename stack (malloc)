@@ -65,6 +65,8 @@ int main()
 	printf("%d\n", pop(&s));
 	printf("%d\n", pop(&s));
 	printf("%d\n", pop(&s));
+	
+	free(s.data);
 
 	return 0;
 }
