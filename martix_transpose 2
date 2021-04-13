@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+typedef struct element {
+	int row;
+	int col;
+	int value;
+}element;
+
+typedef struct spraseMartix {
+	element data[100];
+	int rows;
+	int cols;
+	int terms;
+}martix;
+
+martix transpose(martix a) {
+	martix b;
+	
+	int bindex = 0;
+	b.rows = a.rows;
+	b.cols = a.cols;
+	b.terms = a.terms;
+
+	for (int y = 0; y < a.cols; y++) {
+		for (int x = 0; x < a.terms; x++) {
+			if (a.data[x].col == y) {
+				b.data[bindex].row = a.data[x].col;
+				b.data[bindex].col = a.data[x].row;
+				b.data[bindex].value = a.data[x].value;
+				bindex++;
+			}
+		}
+	}
+
+	return b;
+}
+
+void print(martix k) {
+	for (int i = 0; i < k.terms; i++) {
+		printf("(%d, %d, %d)\n", k.data[i].row, k.data[i].col, k.data[i].value);
+	}
+}
+
+int main()
+{
+	spraseMartix m = { { {0, 3, 7}, {1, 0, 9}, {1 ,5 ,8}, {3, 0, 6}, {3, 1, 5}, {4, 5, 1}, {5, 2, 2} }, 6, 7, 7 };
+
+	spraseMartix k = transpose(m);
+
+	print(k);
+	
+	return 0;
+}
