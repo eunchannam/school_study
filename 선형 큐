@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+
+#define size 10
+typedef int element;
+
+typedef struct que {
+	int front;
+	int rear;
+	element data[size];
+}quetype;
+
+void init_que(quetype* s) {
+	s->front = -1;
+	s->rear = -1;
+}
+
+int is_full(quetype* s) {
+	if (s->rear == size - 1) return 1;
+	return 0;
+}
+
+int is_empty(quetype* s) {
+	if (s->rear == s->front) return 1;
+	return 0;
+}
+
+void enqueue(quetype* s, element item) {
+	if (is_full(s)) {
+		fprintf(stderr, "스택 포화 에러");
+		exit(1);
+	}
+	else {
+		s->data[++(s->rear)] = item;
+	}
+}
+
+element dequeue(quetype* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		return s->data[++(s->front)];
+	}
+}
+
+void print(quetype* s) {
+	for (int i = 0; i < size; i++) {
+		if (i > s->front && i <= s->rear) {
+			printf("%d|", s->data[i]);
+		}
+		else printf("  |");
+	}
+}
+
+int main()
+{
+	quetype q;
+	init_que(&q);
+	
+	enqueue(&q, 1);
+	enqueue(&q, 2);
+	enqueue(&q, 3);
+	enqueue(&q, 4);
+	enqueue(&q, 5);
+
+	printf("%d", dequeue(&q));
+	printf("%d", dequeue(&q));
+	printf("%d", dequeue(&q));
+
+	return 0;
+}
