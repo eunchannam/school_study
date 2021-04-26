@@ -1,0 +1,99 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+typedef int element;
+
+typedef struct node {
+	element data;
+	struct node * link;
+}Node;
+
+Node* insert_first(Node* head, element value) {
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->data = value;
+	p->link = head;
+	head = p;
+	return head;
+}
+
+Node* insert(Node* head, Node* pre, element value) {
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->data = value;
+	p->link = pre->link;
+	pre->link = p;
+	return head;
+}
+
+Node* delete_first(Node* head) {
+	Node* removed;
+	if (head == NULL) return NULL;
+	removed = head;
+	head = removed->link;
+	free(removed);
+	return head;
+}
+
+Node* Delete(Node* head, Node* pre) {
+	Node* removed;
+	removed = pre->link;
+	pre->link = removed->link;
+	free(removed);
+	return head;
+}
+
+void print_list(Node* head) {
+	for (Node* p = head; p != NULL; p = p->link) {
+		printf("%d->", p->data);
+	}
+	printf("NULL");
+}
+
+Node* search_list(Node* head, element x) {
+	for (Node* p = head; p != NULL; p = p->link) {
+		if (p->data == x) return p;
+	}
+	return NULL;
+}
+
+Node* concat_list(Node* head1, Node* head2) {
+	if (head1 == NULL)return head2;
+	else if (head2 == NULL) return head2;
+	else {
+		Node* p = head1;
+		while (p != NULL) {
+			p = p->link;
+		}
+		p->link = head2;
+		return head1;
+	}
+}
+
+Node* reverse(Node* head) {
+	Node* r, * q, * p;
+	p = head;
+	q = NULL;
+	while (p != NULL) {
+		r = q;
+		q = p;
+		p = p->link;
+		q->link = r;
+	}
+	return q;
+}
+
+int main()
+{
+	Node* head = NULL;
+
+	head = insert_first(head, 10);
+	head = insert_first(head, 20);
+	head = insert_first(head, 30);
+	head = insert_first(head, 40);
+	head = insert(head, head->link->link, 990);
+	head = reverse(head);
+	print_list(head);
+
+	return 0;
+}
