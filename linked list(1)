@@ -70,7 +70,7 @@ Node* concat_list(Node* head1, Node* head2) {
 	}
 }
 
-Node* reverse(Node* head) {
+Node* reverse(Node* head) {      //반드시 할줄알기 차라리 외우기
 	Node* r, * q, * p;
 	p = head;
 	q = NULL;
