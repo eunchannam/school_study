@@ -31,7 +31,7 @@ Node* insert_last(Node* head, element data) {
 
 	if (head == NULL) {
 		head = node;
-		node->link = head;
+		node->link = head; // head->link = head; 과 동일
 	}
 	else {
 		node->link = head->link;
