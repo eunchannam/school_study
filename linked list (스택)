@@ -1,0 +1,71 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+typedef int element;
+
+typedef struct Node {
+	element data;
+	struct Node* link;
+}Node;
+
+typedef struct type {
+	Node* top;
+}stackType;
+
+void init(stackType* s) {
+	s->top = NULL;
+}
+
+int is_empty(stackType* s) {
+	if (s->top == NULL) return 1;
+	return 0;
+}
+
+void push(stackType* s, element data) {
+	Node* temp = (Node*)malloc(sizeof(Node));
+
+	temp->data = data;
+	temp->link = s->top;
+	s->top = temp;
+}
+
+element pop(stackType* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		Node* temp = s->top;
+		element data = temp->data;
+		s->top = s->top->link;
+		free(temp);
+		return data;
+	}
+}
+
+element peek(stackType* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		return s->top->data;
+	}
+}
+
+void print(stackType* s) {
+	Node* p = s->top;
+	for (p; p != NULL; p = p->link) {
+		printf("%d->", p->data);
+	}
+	printf("NULL\n");
+}
+
+int main()
+{
+	
+
+	return 0;
+}
