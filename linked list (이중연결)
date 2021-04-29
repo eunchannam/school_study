@@ -1,0 +1,63 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+typedef int element;
+
+typedef struct Node {
+	element data;
+	struct Node* llink;
+	struct Node* rlink;
+}Node;
+
+void init(Node* head) {
+	head->llink = head;
+	head->rlink = head;
+}
+
+void dinsert(Node* before, element data) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->llink = before;
+	newNode->rlink = before->rlink;
+	before->rlink->llink = newNode;
+	before->rlink = newNode;
+}
+
+void ddelete(Node* head, Node* removed) {
+	if (removed == head) return;
+
+	removed->llink->rlink = removed->rlink;
+	removed->rlink->llink = removed->llink;
+	free(removed);
+}
+
+void print(Node* head) {
+	Node* p;
+	for (p = head->rlink; p != head; p = p->rlink) {
+		printf("<-|%d|->", p->data);
+	}
+	printf("\n");
+}
+
+int main()
+{
+	Node* head = (Node*)malloc(sizeof(Node));
+	init(head);
+
+	for (int i = 0; i < 5; i++) {
+		dinsert(head, i + 1);
+		print(head);
+	}
+
+	for (int i = 0; i < 5; i++) {
+		ddelete(head, head->rlink);
+		print(head);
+	}
+
+	free(head);
+
+	return 0;
+}
