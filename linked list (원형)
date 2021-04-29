@@ -1,0 +1,70 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+typedef int element;
+
+typedef struct Node {
+	element data;
+	struct Node* link;
+}Node;
+
+Node* insert_first(Node* head, element data) {
+	Node* node = (Node*)malloc(sizeof(Node));
+	node->data = data;
+	
+	if (head == NULL) {
+		head = node;
+		node->link = head;
+	}
+	else {
+		node->link = head->link;
+		head->link = node;
+	}
+	return head;
+}
+
+Node* insert_last(Node* head, element data) {
+	Node* node = (Node*)malloc(sizeof(Node));
+	node->data = data;
+
+	if (head == NULL) {
+		head = node;
+		node->link = head;
+	}
+	else {
+		node->link = head->link;
+		head->link = node;
+		head = node;
+	}
+	return head;
+}
+
+void print(Node* head) {
+	Node* p;
+
+	if (head == NULL) return;
+	p = head->link;
+	while (p != head) {
+		printf("%d->", p->data);
+		p = p->link;
+	}
+	printf("%d->", p->data);
+}
+
+int main()
+{
+	Node* head = NULL;
+
+	head = insert_last(head, 10);
+	head = insert_last(head, 20);
+	head = insert_last(head, 30);
+	head = insert_last(head, 40);
+	head = insert_first(head, 2);
+	head = insert_first(head, 4);
+
+	print(head);
+
+	return 0;
+}
