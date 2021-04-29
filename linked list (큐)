@@ -1,0 +1,89 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+typedef int element;
+
+typedef struct Node {
+	element data;
+	struct Node* link;
+}Node;
+
+typedef struct type {
+	Node* front,* rear;
+}queType;
+
+void init(queType* q) {
+	q->front = NULL;
+	q->rear = NULL;
+}
+
+int is_empty(queType* q) {
+	if (q->front == NULL) return 1;
+	return 0;
+}
+
+void enqueue(queType* q, element data) {
+	Node* temp = (Node*)malloc(sizeof(Node));
+	temp->data = data;
+	temp->link = NULL;
+	if (is_empty(q)) {
+		q->front = temp;
+		q->rear = temp;
+	}
+	else {
+		q->rear->link = temp;
+		q->rear = temp;
+	}
+}
+
+element dequeue(queType* q) {
+	if (is_empty(q)) {
+		q->rear = NULL;
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		Node* temp = q->front;
+		element data = temp->data;
+		q->front = q->front->link;
+		free(temp);
+		return data;
+	}
+}
+
+element peek(queType* q) {
+	if (is_empty(q)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		return q->front->data;
+	}
+}
+
+void print(queType* q) {
+	Node* p;
+	for (p = q->front; p != NULL; p = p->link) {
+		printf("%d->", p->data);
+	}
+	printf("NULL\n");
+}
+
+int main()
+{
+	queType q;
+
+	init(&q);
+
+	enqueue(&q, 10);
+	enqueue(&q, 10);
+	enqueue(&q, 10);
+	print(&q);
+	dequeue(&q);
+	dequeue(&q);
+	print(&q);
+
+	return 0;
+}
