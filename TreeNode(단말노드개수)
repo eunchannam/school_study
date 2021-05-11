@@ -1,0 +1,12 @@
+int get_leaf_count(TreeNode* node) {
+	int cnt = 0;
+	if (node != NULL) {
+		if (node->left == NULL && node->right == NULL) {
+			return 1;
+		}
+		else {
+			cnt = get_leaf_count(node->left) + get_leaf_count(node->right);
+		}
+	}
+	return cnt;
+}
