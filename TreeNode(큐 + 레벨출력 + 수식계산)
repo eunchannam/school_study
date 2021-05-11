@@ -1,0 +1,104 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string>
+
+#define size 10
+
+
+typedef struct TreeNode {
+	int data;
+	struct TreeNode* left, * right;
+}TreeNode;
+
+typedef TreeNode* element;
+
+typedef struct que {
+	int front;
+	int rear;
+	element data[size];
+}quetype;
+
+void init_que(quetype* s) {
+	s->front = 0;
+	s->rear = 0;
+}
+
+int is_full(quetype* s) {
+	if ((s->rear + 1) % size == (s->front)) return 1;
+	return 0;
+}
+
+int is_empty(quetype* s) {
+	if (s->rear == s->front) return 1;
+	return 0;
+}
+
+void enqueue(quetype* s, element item) {
+	if (is_full(s)) {
+		fprintf(stderr, "스택 포화 에러");
+		exit(1);
+	}
+	else {
+		s->rear = (s->rear + 1) % size;
+		s->data[s->rear] = item;
+	}
+}
+
+element dequeue(quetype* s) {
+	if (is_empty(s)) {
+		fprintf(stderr, "스택 공백 에러");
+		exit(1);
+	}
+	else {
+		s->front = (s->front + 1) % size;
+		return s->data[s->front];
+	}
+}
+
+void level_order(TreeNode* ptr) {
+	quetype q;
+	init_que(&q);
+
+	if (ptr == NULL) return;
+	enqueue(&q, ptr);
+	while (!is_empty(&q)) {
+		ptr = dequeue(&q);
+		printf(" [%d] ", ptr->data);
+		
+		if (ptr->left) enqueue(&q, ptr->left);
+		if (ptr->right) enqueue(&q, ptr->right);
+	}
+}
+
+int eveluate(TreeNode* root) {
+	if (root == NULL) return 0;
+	if (root->left == NULL && root->right == NULL) return root->data;
+	else {
+		int op1 = eveluate(root->left);
+		int op2 = eveluate(root->right);
+		printf("%d %c %d를 계산합니다\n", op1, root->data, op2);
+
+		if (root->data == '+') return op1 + op2;
+		else if (root->data == '-') return op1 - op2;
+		else if (root->data == '*') return op1 * op2;
+		else if (root->data == '/') return op1 / op2;
+	}
+}
+
+int main()
+{
+	TreeNode n7 = { 12, NULL, NULL };
+	TreeNode n6 = { 14, NULL, NULL };
+	TreeNode n5 = { 6, NULL, NULL };
+	TreeNode n4 = { 4, NULL, NULL };
+	TreeNode n3 = { '+', &n6, &n7 };
+	TreeNode n2 = { '+', &n4, &n5 };
+	TreeNode n1 = { '+', &n2, &n3 };
+
+	TreeNode* root = &n1;
+
+	printf("수식의 값은 %d입니다.", eveluate(root));
+
+	return 0;
+}
