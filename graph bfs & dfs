@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+#define Max_Vertices 10
+int visited[Max_Vertices];
+
+/*typedef struct GraphType {
+	int n;
+	int adj_mat[Max_Vertices][Max_Vertices];
+} graphtype;*/
+
+typedef struct GraphNode {
+	int vertex;
+	struct GraphNode* link;
+} graphnode;
+
+typedef struct GraphType {
+	int n;
+	graphnode* adj_list[Max_Vertices];
+} graphtype;
+
+/*void dfs_mat(graphtype* g, int v) {
+	visited[v] = 1;
+	printf("정점 %d", v);
+	for (int w = 0; w < g->n; w++) {
+		if (g->adj_mat[v][w] && !visited[w]) {
+			dfs_mat(g, w);
+		}
+	}
+}*/
+
+void dfs_list(graphtype* g, int v) {
+	graphnode* w;
+	visited[v] = 1;
+	printf("정점 %d", v);
+	for (w = g->adj_list[v]; w != NULL; w = w->link) {
+		if (!visited[w->vertex]) {
+			dfs_list(g, w->vertex);
+		}
+	}
+}
+
+void bfs_mat(graphtype* g, int v) {
+	quetype q;
+
+	init_que(&q);
+	visited[v] = 1;
+	printf("%d 방문 -> ", v);
+	euqueue(&q, v);
+	while (!is_empty(&q)) {
+		v = dequeue(&q);
+		for (int w = 0; w < g->n; w++) {
+			if (g->adj_mat[v][w] == 1 && !visited[w]) {
+				visited[w] = 1;
+				printf("%d 방문 -> ", w);
+				enqueue(&q, w);
+			}
+		}
+	}
+}
+
+void bfs_list(graphtype* g, int v) {
+	graphnode* w;
+	queuetype q;
+
+	init_que(&q);
+	visited[v] = 1;
+	printf("%d 방문 -> ", v);
+	enqueue(&q, v);
+	while (!is_empty(&q)) {
+		v = dequeue(&q);
+		for (w = g->adj_list[v]; w != NULL; w = w->link;) {
+			if (!visited[w->vertex]) {
+				visited[w->vertex] = 1;
+				printf("%d 방문 -> ", w->vertex);
+				enqueue(&q, w->vertex);
+			}
+		}
+	}
+}
+
+int main()
+{
+
+
+	return 0;
+}
