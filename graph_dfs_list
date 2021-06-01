@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+
+int visited[10];
+
+typedef struct graphNode {
+	int vertex;
+	struct graphNode* link;
+}graphNode;
+
+typedef struct graphType {
+	int n;
+	graphNode* adj_list[10];
+}graphType;
+
+void link_node(graphNode* g, int vertex) {
+	graphNode* w = (graphNode*)malloc(sizeof(graphNode));
+	w->vertex = vertex;
+	w->link = NULL;
+	g->link = w;
+}
+
+void dfs_list(graphType* g, int v) {
+	graphNode* w;
+	visited[v] = 1;
+	printf("%d ->", v);
+	for (w = g->adj_list[v]->link; w != NULL; w = w->link) {
+		if (visited[w->vertex] != 1) {
+			dfs_list(g, w->vertex);
+		}
+	}
+}
+
+int main()
+{
+	graphType* g = (graphType*)malloc(sizeof(graphType));
+
+	g->n = 6;
+	g->adj_list[0] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[1] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[2] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[3] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[4] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[5] = (graphNode*)malloc(sizeof(graphNode));
+	g->adj_list[6] = (graphNode*)malloc(sizeof(graphNode));
+
+	for (int i = 0; i < 6; i++) {
+		g->adj_list[i]->link = NULL;
+	}
+	link_node(g->adj_list[0], 1);
+	link_node(g->adj_list[0]->link, 2);
+	link_node(g->adj_list[1], 3);
+	link_node(g->adj_list[1]->link, 4);
+	link_node(g->adj_list[2], 5);
+	link_node(g->adj_list[2]->link, 6);
+
+	dfs_list(g, 0);
+
+	free(g);
+
+	return 0;
+}
