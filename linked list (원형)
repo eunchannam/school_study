@@ -46,10 +46,10 @@ void print(Node* head) {
 
 	if (head == NULL) return;
 	p = head->link;
-	while (p != head) {
-		printf("%d->", p->data);
-		p = p->link;
-	}
+	do {
+	   printf("%d->", p->data);
+	   p = p->link;
+	}while (p != head);
 	printf("%d->", p->data);
 }
 
