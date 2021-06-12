@@ -1,0 +1,26 @@
+int max(int a, int b) {
+	if (a >= b) return a;
+	else return b;
+}
+
+int get_height(TreeNode* node) {
+	int height = 0;
+	if (node != NULL) {
+		height = 1 + max(get_height(node->left), get_height(node->right));
+	}
+	return height;
+}
+
+int is_balanced(TreeNode* node){
+	if (node == NULL) return 0;
+	int a = get_height(node->left);
+	int b = get_height(node->right);
+	int c = a - b;
+	if (c >= -1 && c <= 1) return 1;
+	else return 0;
+}
+
+int get_sum(TreeNode* node){
+	if (node == NULL) return 0;
+	return node->data + get_sum(node->left) + get_sum(node->right);
+}
