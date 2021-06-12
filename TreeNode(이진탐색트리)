@@ -59,8 +59,3 @@ TreeNode* delete_node(TreeNode* node, int key) {
 		}
 	}
 }
-
-int get_sum(TreeNode* node){
-	if (node == NULL) return 0;
-	return node->data + get_sum(node->left) + get_sum(node->right);
-}
