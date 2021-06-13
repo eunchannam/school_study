@@ -37,6 +37,29 @@ void insert_edge(graphType* g, int u, int v){
 	g->adj_list[u] = node;
 }
 
+int calculateOutDegree(GraphType* g, int v) { 
+	int degree;
+	GraphNode* node=g->adj_list[v]; 
+	while(node!=NULL) { 
+		degree++; node=node->link;
+	} 
+	return degree; 
+}
+
+int calculateInDegree(GraphType* g, int v) { 
+	int degree; 
+	for(int i=0;i g->n;i++) { 
+		node=g->adj_list[i]; 
+		while(node!=NULL) { 
+			if((node->vertex)==v) degree++; 
+			node=node->link; 
+			} 
+		} 
+		return degree; 
+}
+
+
+
 void print(graphType* g){
 	for(int i = 0; i < g->n; i++){
 		graphNode* p = g->adj_list[i];
