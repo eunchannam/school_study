@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+#define Max 10
+
+struct edge {
+	int start, end, weight;
+};
+
+typedef struct graphType {
+	int n;
+	struct edge edges[2 * Max];
+}graphType;
+
+int parent[Max];
+
+void init(int n) {
+	for (int i = 0; i < n; i++) {
+		parent[i] = -1;
+	}
+}
+
+int get_find(int cur) {
+	if (parent[cur] == -1) return cur;
+	while (parent[cur] != -1) cur = parent[cur];
+	return cur;
+}
+
+void set_union(int a, int b) {
+	int root1 = get_find(a);
+	int root2 = get_find(b);
+	if (root1 != root2) {
+		parent[root1] = root2;
+	}
+}
+
+void kruskal(graphType* g) {
+	int edge_accepted = 0;
+	int uset, vset;
+	struct edge e;
+
+	init(g->n);
+	qsort(g->edges, g->n, sizeof(struct edge), compare);
+
+	for (int i = 0; edge_accepted < (g->n - 1); i++) {
+		e = g->edges[i];
+		uset = get_find(e.start);
+		vset = get_find(e.end);
+		if (uset != vset) {
+			printf("간선 (%d,%d) %d 선택\n", e.start, e.end, e.weight);
+			edge_accepted++;
+			set_union(uset, vset);
+		}
+	}
+}
+
+int main()
+{
+	
+	return 0;
+}
+
