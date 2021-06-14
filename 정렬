@@ -1,0 +1,84 @@
+void selection_sort(int list[], int n) {
+    int i, j, least, temp;
+    for(i = 0; i < n-1; i++) {
+        least = i;
+        for(j = i + 1; j < n; j++){
+            if (list[j] < list[least]) least = j;
+        }
+        temp = list[i];
+        list[i] = list[least];
+        list[least] = temp;
+    }
+}
+//삽입 정렬
+void insertion_sort(int list[], int n) {   
+    int i, j, key;
+    for (i = 1; i < n; i++) {
+        key = list[i];
+        for (j = i - 1; j >= 0 && list[j] > key; j--) {
+            list[j+1] = list[j];
+        }
+        list[j+1] = key;
+    }
+}
+//버블 정렬
+void bubble_sort(int list[], int n) {  
+    int i, j, temp;
+    for (i = n - 1; i > 0; i--) {
+        for (j = 0; j < i; j++) {
+            if (list[j] > list[j + 1]) {
+                temp = list[j];
+                list[j] = list[j + 1];
+                list[j + 1] = temp;
+            }
+        }
+    }
+}
+//합병 정렬
+int sorted[MAX_SIZE]; // 임시 저장 공간
+void merge(int list[], int left, int mid, int right) {
+    int i, j, k, l;
+    i = left; j = mid + 1; k = left;
+    while (i <= mid && j <= right) {
+        if (list[i] <= list[j]) sorted[k++] = list[i++];
+       else sorted[k++] = list[j++];
+    }
+    if (i > mid)  // 남아 있는 레코드의 일괄 복사
+        for(l = j; l <= right; l++)
+            sorted[k++] = list[l];
+    else 	     // 남아 있는 레코드의 일괄 복사
+        for(l = i; l <= mid; l++)
+            sorted[k++] = list[l];
+    // 배열 sorted[]의 리스트를 배열 list[]로 복사
+    for (l = left; l <= right; l++)
+        list[l] = sorted[l];
+}
+
+void merge_sort(int list[], int left, int right) {
+    int mid;
+    if (left < right) {
+        mid = (left + right) / 2;            // 분할
+        merge_sort(list, left, mid);      // 부분 정렬
+        merge_sort(list, mid+1, right); // 부분 정렬
+        merge(list, left, mid, right);    // 합병
+    }
+}
+//기수 정렬
+#define BUCKETS 10	// 버켓 수: 10진수로 기수 표현
+#define DIGITS 4	// 입력 숫자의 최대 자리 수
+void radix_sort(int list[], int n) {
+    int i, b, d, factor = 1;
+    QueueType queues[BUCKETS];
+
+    for(b = 0; b < BUCKETS; b++) 
+        init(&queues[b]);			// 버켓들의 초기화
+
+    for (d = 0; d < DIGITS; d++) {
+        for (i = 0; i < n; i++)		// 요소의 자리 수에 따라 버켓에 입력
+            enqueue (&queues[(list[i] / factor) % 10], list[i]);
+        for(b = i = 0; b < BUCKETS; b++)  	// 버켓에서 꺼내어 list로 합침
+            while (!is_empty(&queues[b]))
+                list[i++] = dequeue(&queues[b]);
+        factor *= 10;			// 그 다음 자리수로 이동
+    }
+}
